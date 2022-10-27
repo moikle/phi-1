@@ -1,6 +1,5 @@
 import numpy as np
-import phi_params_27Apr22 as conf
-import nodes_conf as nodes_conf
+import phi_params as conf
 
 
 n = conf.num_of_bins
@@ -12,7 +11,7 @@ OUTPUT: int in range 0 to num_of_bins**3 -1
 """
 def get_i_fr_tuple(t):
     n = conf.num_of_bins
-    N = nodes_conf.num_of_nodes
+    N = conf.num_of_nodes
     i = 0
     for j in range(N):
         i += (t[j] - 1) * n ** (N-j-1)
@@ -85,7 +84,7 @@ def hash2list(hsh):
 def cal_p(state_tuple, tuple_hash, argument):
 
 	n = conf.num_of_bins
-	N = nodes_conf.num_of_nodes
+	N = conf.num_of_nodes
 	"""
 	Create a count vector providing the probability counts (above the base number) for each node/bin combination
 """

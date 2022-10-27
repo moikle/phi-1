@@ -1,16 +1,13 @@
 from binner import *
 from build_hash import *
 import csv
-#likeABoss
 from cal_p_current import *
 #from get_all_graphs import *
 from tuple_time_series import *
-import phi_params_27Apr22 as conf
-import nodes_conf as nodes_conf
+import phi_params as conf
 from scipy.stats import wasserstein_distance
 import matplotlib.pyplot as plt
 import numpy as np
-from ica import compute_ica
 
 # Function that takes two lists as inputs and returns a list of the set union of the two lists
 def Union(lst1, lst2):
@@ -193,11 +190,6 @@ def wasserstein_hash_2_list(hash1, hash2):
 # the conditional cause and effect repertoire probability distributions, calculates sliding windows of Phi values
 # and displays the results over time
 def run_phi():
-    f = open("nodes_conf.py" , "w")
-    f.write("num_of_nodes = ")
-    f.write(str(conf.num_of_nodes))
-    f.write("\n")
-    f.close()
     
     #Get the data and bin it into the time series
     raw_time_series = load_data(conf.input_file, conf.no_of_cols_to_skip)
@@ -240,13 +232,6 @@ def run_phi():
         
         cur_X  = tuple_series[ starting_value + conf.int_len - 3]
         
-        # Compute ICA and determine the number of nodes that minimizes the sum of the square of the errors for the sliding window
-        if conf.ICA_switch == True:
-            [S_, num_of_nodes] = compute_ica(conf.input_file, starting_value, conf.int_len, conf.max_nodes)
-            f = open("nodes_conf.py" , "w")
-            f.write("num_of_nodes = ")
-            f.write(str(num_of_nodes))
-            f.close()
         
         #Initilize vectors to hold D(Pe || Pe(i)) and D(Pc || Pc(i))
         e_vals = [] 
@@ -321,7 +306,7 @@ info_string = "Phi (STD %2.6f, MEAN: %1.3f)" % (phi_sd, phi_mean)
 plt.plot(phi_vals, label = info_string)
 plt.legend()
 plt.show(block = False)
-plt.savefig("image_results/window" + str(conf.int_len) + "_noOfBins" + str(conf.num_of_bins) + ".png")
+plt.savefig("image_results/window" + str(conf.int_len) + "_noOfBins" + str(conf.num_of_bins) + "_noOfNodes" + str(conf.num_of_nodes) + ".png")
 plt.clf()
 
 #with open("/Users/moikle_admin/Research/SingularityNET/Python/Phi Pipeline/phi_vals.py" , "wb") as f:

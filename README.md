@@ -36,13 +36,13 @@ Phi/
 ├── binner.py
 ├── build_hash.py
 ├── cal_p_current.py
-├── ica.py
 ├── main.py
-├── nodes_conf.py
 ├── partition.png
-├── phi_params_27Apr22.py
+├── phi_params.py
 ├── README.md
 ├── Sophia_Meditation.csv
+├── Sophia_Meditation_cleaned.csv
+├── Sophia_Meditation_cleaned2.csv
 └── tuple_time_series.py
 
 binner.py:           
@@ -56,19 +56,13 @@ cal_p_current.py:
     Contains most of the necessary function machinery for calculating the appropriate probabilities for use in each graph bi-partition
     This file produces the distributions Pe/c(X{t_or_t-1}|X{t_or_t-1}) = X needed as shown in partition.png
     
-ica.py:
-    This file provides Sk-learn functionality for reducing the feature dimensionality of multi-dimsional time series data as a pre-processing step in calculating Tononi Phi
-
 main.py:            
     "python main.py" begins the Phi pipeline. There are multiple helper functions for the main run_phi function.
-    
-nodes_conf.py:
-    When using ICA (ICA_switch set to "True"), nodes_conf is a configuration file solely for updating the num_of_nodes used for each sliding window. This number is stored in the nodes_conf.py configuration file and subsequently read in to perform the appropriate graph partitions and probability calculations.
     
 partition.png:
     This diagram illustrates the graph "effect repertoire" partition [[(0,1),(1,2)],[(2,),(0,)]] in which nodes 0 and 1 affect nodes 1 and 2, while node 2 affects node 0
 
-phi_params_27Apr22.py:  This is the latest file for setting basic parameters including
+phi_params.py:  This is the  file for setting basic parameters including
 
     int_len, which is the desired length of the sliding window used. The code calculates new
         Phi values across each window, allowing one to see how Phi varies over time.
@@ -77,9 +71,6 @@ phi_params_27Apr22.py:  This is the latest file for setting basic parameters inc
     
     num_of_nodes initializes the number of nodes/features used to calculate Phi. An example graph partition
         can be viewed in the file partition.png.
-        If Independent Component Analysis (ICA) is turned on, this number will ve recomputed on the fly, 
-        based upon the initial dimensional reduction from sk-learn's ICA routine. In this case, ICA is 
-        called during each sliding window.
         
     input_file: is the name of the input file of the time-series data. Each row corresponds to a time step, and each column to 1-D time-series
 
@@ -89,20 +80,18 @@ phi_params_27Apr22.py:  This is the latest file for setting basic parameters inc
 
     sliding_window_start is the row in which the first sliding time window starts (1-based so 1 would be the very first row)
 
-    max_nodes is the maximum number of features to be returned by the ICA routine. ICA may override this value
-    and return a smaller value
-    
-    ICA_switch is a Boolean value to determine whether ICA should be used for dimensional reduction prior to graph partitioning
-    
 README.md:
     This file
     
 Sophia_Meditation.csv:
-    Example input file, based upon the Sophia Meditation experiment run by Eddie Monroe and Julia Mossbridge. Data supplied by Misgana Bayetta.
+    Example input file, based upon the Sophia Meditation experiment run by Eddie Monroe and Julia Mossbridge. Data supplied by Misgana Bayetta. Running Phi should result in zero at all times since pertitioning off a node that is always zero will result in the same information content.
     
-
+Sophia_Meditation_cleaned.csv:
+    This is the same as the Sophia_Meditation.csv file but with the columns consisting of only zeros deleted. With some parameter settings this will still result in a flat zero line.
     
-
+Sophia_Meditation_cleaned2.csv:
+    This is the same as the Sophia_Meditation_cleaned.csv file but with the columns consisting of only one non-zero value deleted.
+    
 # What is Tononi Phi?
 
 Created by University of Wisconsin psychiatrist and neuroscientist Giulio Tononi in
